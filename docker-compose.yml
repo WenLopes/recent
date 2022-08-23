@@ -1,0 +1,9 @@
+version: '3.4'
+services:
+  pix-microservices-recent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pix-microservices-recent
+    ports:
+      - "16092:8080"
