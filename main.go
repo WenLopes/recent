@@ -16,7 +16,6 @@ func main() {
 		writer.Write([]byte("Hello, world!"))
 	}).Methods("GET")
 
-	fmt.Printf("Api pronta para receber requisições 🏆\n")
+	fmt.Printf("Api pronta para receber requisições na porta 16092 🏆\n")
 	log.Fatal(http.ListenAndServe(":8080", router))
-
 }

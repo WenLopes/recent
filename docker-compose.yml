@@ -7,3 +7,7 @@ services:
     container_name: pix-microservices-recent
     ports:
       - "16092:8080"
+
+networks:
+  bubble:
+    external: true
