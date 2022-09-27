@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/WenLopes/recent/app/api"
+	"github.com/WenLopes/recent/app/api/handlers"
 	"github.com/WenLopes/recent/infra/repository"
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -14,23 +16,26 @@ import (
 
 func main() {
 
-	usersHistoryRepository := repository.NewHistoryMongo(initMongoClient())
-	usersHistoryRepository.GetAll()
-
 	router := mux.NewRouter()
+	server := api.NewServer(initHandlers())
+	server.Router(router)
 
-	router.HandleFunc("/home", func(writer http.ResponseWriter, request *http.Request) {
-		writer.Header().Set("Content-Type", "application/json")
-		writer.WriteHeader(200)
-		writer.Write([]byte("Hello, world!"))
-	}).Methods("GET")
-
-	fmt.Printf("Api pronta para receber requisições na porta 16092 🏆\n")
+	fmt.Printf("Api pronta para receber requisições na porta 16093 🏆\n")
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
+func initHandlers() *api.Handlers {
+	h := new(api.Handlers)
+	h.AllHandler = initAllHandler()
+	return h
+}
+
+func initAllHandler() *handlers.AllHandler {
+	return handlers.NewAllHandler(repository.NewHistoryMongo(initMongoClient()))
+}
+
 func initMongoClient() *mongo.Client {
-	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb://192.168.0.20:27051"))
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb://192.168.0.2:27051"))
 	if err != nil {
 		panic(err)
 	}

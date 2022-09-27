@@ -1,6 +1,7 @@
 package domain
 
 type History struct {
+	UserId            string
 	Id                int
 	HistoryType       string
 	KeyAddressingType string

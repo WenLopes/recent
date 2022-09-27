@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"fmt"
+	"github.com/WenLopes/recent/domain"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -13,33 +13,45 @@ const (
 )
 
 type HistoryMongo struct {
-	db *mongo.Client
+	collection *mongo.Collection
 }
 
 func NewHistoryMongo(db *mongo.Client) *HistoryMongo {
+	historyCollection := db.Database(database).Collection(collection)
+
 	return &HistoryMongo{
-		db: db,
+		collection: historyCollection,
 	}
 }
 
-func (historyMongo HistoryMongo) GetAll() {
-	favoritesCollection := historyMongo.db.Database(database).Collection(collection)
+func (historyMongo HistoryMongo) GetAll() []domain.History {
 
-	cursor, err := favoritesCollection.Find(context.TODO(), bson.D{})
+	cursor, err := historyMongo.collection.Find(context.TODO(), bson.D{})
 
 	if err != nil {
 		panic(err)
 	}
 
 	var results []bson.M
-	// check for errors in the conversion
 	if err = cursor.All(context.TODO(), &results); err != nil {
 		panic(err)
 	}
 
-	// display the documents retrieved
-	fmt.Println("displaying all results in a collection")
+	var histories []domain.History
+
 	for _, result := range results {
-		fmt.Println(result)
+		history := new(domain.History)
+		history.UserId = result["user_id"].(string)
+		if result["histories"] != nil {
+			dado := result["histories"].(bson.A)
+			for _, d := range dado {
+				novodado := d.(bson.M)
+				history.Id = int(novodado["id"].(int32))
+				history.HistoryType = novodado["key_addressing_type"].(string)
+				history.HistoryType = novodado["type"].(string)
+			}
+		}
+		histories = append(histories, *history)
 	}
+	return histories
 }
