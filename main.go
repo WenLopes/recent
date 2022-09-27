@@ -6,6 +6,7 @@ import (
 	"github.com/WenLopes/recent/app/api"
 	"github.com/WenLopes/recent/app/api/handlers"
 	"github.com/WenLopes/recent/infra/repository"
+	"github.com/WenLopes/recent/usecases/users_history"
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -31,7 +32,9 @@ func initHandlers() *api.Handlers {
 }
 
 func initAllHandler() *handlers.AllHandler {
-	return handlers.NewAllHandler(repository.NewHistoryMongo(initMongoClient()))
+	usersHistoryRepository := repository.NewUsersHistoryMongo(initMongoClient())
+	usersHistoryService := users_history.NewUsersHistoryService(usersHistoryRepository)
+	return handlers.NewAllHandler(usersHistoryService)
 }
 
 func initMongoClient() *mongo.Client {

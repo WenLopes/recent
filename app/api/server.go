@@ -10,7 +10,7 @@ func NewServer(handlers *Handlers) *Server {
 	return server
 }
 
-//Todo: Estudar melhor como funciona isso
+//TODO: Criar o server usando essa função
 func WithHandlers(handlers *Handlers) func(server *Server) error {
 	return func(server *Server) error {
 		server.handlers = handlers

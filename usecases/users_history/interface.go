@@ -1,7 +1,7 @@
-package history
+package users_history
 
 import "github.com/WenLopes/recent/domain"
 
 type Repository interface {
-	GetAll() []domain.History
+	GetAllHistories() []domain.History
 }

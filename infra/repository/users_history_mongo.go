@@ -12,19 +12,21 @@ const (
 	collection = "users_history"
 )
 
-type HistoryMongo struct {
+type UsersHistoryMongo struct {
 	collection *mongo.Collection
 }
 
-func NewHistoryMongo(db *mongo.Client) *HistoryMongo {
+func NewUsersHistoryMongo(db *mongo.Client) *UsersHistoryMongo {
 	historyCollection := db.Database(database).Collection(collection)
 
-	return &HistoryMongo{
+	return &UsersHistoryMongo{
 		collection: historyCollection,
 	}
 }
 
-func (historyMongo HistoryMongo) GetAll() []domain.History {
+//TODO: 1. Receber user ID como parâmetro
+//TODO: 2. Modificar retorno
+func (historyMongo UsersHistoryMongo) GetAllHistories() []domain.History {
 
 	cursor, err := historyMongo.collection.Find(context.TODO(), bson.D{})
 

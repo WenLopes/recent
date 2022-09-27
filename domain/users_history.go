@@ -1,5 +1,15 @@
 package domain
 
+import "go.mongodb.org/mongo-driver/bson/primitive"
+
+type UsersHistory struct {
+	UserId        string
+	HasManualData bool
+	CreatedAt     primitive.DateTime
+	UpdatedAt     primitive.DateTime
+	Histories     []History
+}
+
 type History struct {
 	UserId            string
 	Id                int
