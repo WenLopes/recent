@@ -17,6 +17,7 @@ import (
 
 func main() {
 
+	//TODO: Pesquisar boas práticas. Usar camelCase ou snake_case nos packages?
 	router := mux.NewRouter()
 	server := api.NewServer(initHandlers())
 	server.Router(router)
@@ -33,7 +34,7 @@ func initHandlers() *api.Handlers {
 
 func initAllHandler() *handlers.AllHandler {
 	usersHistoryRepository := repository.NewUsersHistoryMongo(initMongoClient())
-	usersHistoryService := users_history.NewUsersHistoryService(usersHistoryRepository)
+	usersHistoryService := users_history.NewService(usersHistoryRepository)
 	return handlers.NewAllHandler(usersHistoryService)
 }
 

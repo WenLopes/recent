@@ -2,17 +2,16 @@ package users_history
 
 import "github.com/WenLopes/recent/domain"
 
-//public function getByType(string $userId, string $type, int $quantity = 0): Collection
-
-type UsersHistory interface {
+type Service interface {
 	GetByUserId(userId string) domain.UsersHistory
+	GetAll() []domain.History
 }
 
 type usersHistoryService struct {
 	repo Repository
 }
 
-func NewUsersHistoryService(repo Repository) *usersHistoryService {
+func NewService(repo Repository) *usersHistoryService {
 	service := usersHistoryService{
 		repo: repo,
 	}
@@ -21,5 +20,10 @@ func NewUsersHistoryService(repo Repository) *usersHistoryService {
 
 func (service *usersHistoryService) GetByUserId(userId string) domain.UsersHistory {
 	data := domain.UsersHistory{}
+	return data
+}
+
+func (service *usersHistoryService) GetAll() []domain.History {
+	data := service.repo.GetAllHistories()
 	return data
 }

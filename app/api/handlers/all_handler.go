@@ -8,10 +8,10 @@ import (
 )
 
 type AllHandler struct {
-	usersHistoryService users_history.UsersHistory
+	usersHistoryService users_history.Service
 }
 
-func NewAllHandler(usersHistoryService users_history.UsersHistory) *AllHandler {
+func NewAllHandler(usersHistoryService users_history.Service) *AllHandler {
 	handler := &AllHandler{
 		usersHistoryService: usersHistoryService,
 	}
@@ -20,7 +20,7 @@ func NewAllHandler(usersHistoryService users_history.UsersHistory) *AllHandler {
 
 func (handler *AllHandler) GetAll() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		all := handler.usersHistoryService.GetByUserId("1")
+		all := handler.usersHistoryService.GetAll()
 		writer.Header().Set("Content-Type", "application/json")
 		writer.WriteHeader(200)
 
